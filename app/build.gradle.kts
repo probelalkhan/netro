@@ -1,11 +1,11 @@
 plugins {
-    kotlin("plugin.serialization") version "2.1.10"
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinx.serialization)
     id("io.github.probelalkhan.netro") version "0.1"
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -18,7 +18,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -27,17 +26,20 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
@@ -51,8 +53,7 @@ netroConfig {
 }
 
 dependencies {
-    implementation(project(":netro"))
-    // Core
+    // Core Dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -63,20 +64,19 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.compose.navigation)
 
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
-
-    // Dependency Injection (Hilt)
+    // Dependency Injection
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation)
 
-    // Networking (Retrofit & OkHttp)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    // Serialization
     implementation(libs.kotlinx.serialization.json)
+
+    // Networking
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.serializer)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
@@ -87,7 +87,7 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
-    // Debugging Tools
+    // Debugging
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
