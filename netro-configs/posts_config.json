@@ -1,0 +1,25 @@
+{
+  "baseUrl": "https://dummyjson.com/",
+  "endpoints": [
+    {
+      "name": "getUserPosts",
+      "path": "/users/{id}/posts",
+      "method": "GET",
+      "responseModel": "PostListResponse"
+    }
+  ],
+  "models": {
+    "Post": {
+      "id": "Int",
+      "title": "String",
+      "body": "String",
+      "userId": "Int"
+    },
+    "PostListResponse": {
+      "posts": "List<Post>",
+      "total": "Int",
+      "skip": "Int",
+      "limit": "Int"
+    }
+  }
+}
