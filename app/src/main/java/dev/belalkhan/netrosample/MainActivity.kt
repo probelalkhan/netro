@@ -11,11 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 //import androidx.navigation.compose.rememberNavController
-//import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 //import dev.belalkhan.netrosample.navigation.NavGraph
 import dev.belalkhan.netrosample.ui.theme.NetroSampleTheme
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     id("io.github.probelalkhan.netro") version "0.1"
 }
 
@@ -38,6 +40,13 @@ android {
     buildFeatures {
         compose = true
     }
+
+    sourceSets["main"].java.srcDirs("build/generated/netro")
+}
+
+netroConfig {
+    path = project.rootProject.layout.projectDirectory.dir("netro-configs").asFile.absolutePath
+    packageAlias = android.namespace!!
 }
 
 dependencies {
@@ -49,6 +58,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
