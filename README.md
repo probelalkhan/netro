@@ -10,7 +10,6 @@
 - **Organized Code Structure**:
     - API services and models are structured into separate packages.
     - Naming conventions ensure maintainability.
-- **Strict JSON Configuration Naming**: Follows `package_name_config.json` format to ensure structured output.
 - **Easy Integration**: Can be applied as a Gradle plugin in any Kotlin project.
 
 ---
@@ -18,18 +17,6 @@
 ## Installation 📦
 
 ### 1. Apply the Plugin
-
-First, add Netro to your **`settings.gradle.kts`**:
-
-```kotlin
-pluginManagement {
-    repositories {
-        maven("https://jitpack.io")
-        gradlePluginPortal()
-    }
-}
-```
-
 Then, apply the plugin in your **`build.gradle.kts`**:
 
 ```kotlin
@@ -44,6 +31,16 @@ Run:
 gradle sync
 ```
 
+### 3. Add Configuration 
+```kotlin
+netroConfig {
+    path = project.rootProject.layout.projectDirectory.dir("netro-configs").asFile.absolutePath
+    packageAlias = android.namespace!!
+}
+```
+You can customize the configuration as needed:
+- **`path`**: The directory path where JSON configuration files are stored.
+- **`packageAlias`**: The package name for generated API services and models.
 ---
 
 ## Usage 🛠
@@ -51,27 +48,41 @@ gradle sync
 ### 1. Create JSON Configuration File
 Inside your project's resource directory, create a JSON file following the naming convention:
 
-📁 `src/main/resources/api_config/user_config.json`
+📁 `projectRoot/netro-configs/user_config.json`
 
 ```json
 {
-  "package": "com.example.user",
-  "baseUrl": "https://api.example.com",
+  "baseUrl": "https://dummyjson.com/",
   "endpoints": [
     {
-      "name": "getUser",
-      "path": "/users/{id}",
+      "name": "getUsers",
+      "path": "/users",
       "method": "GET",
-      "response": "UserResponse"
+      "responseModel": "UserListResponse"
     },
     {
-      "name": "createUser",
-      "path": "/users",
-      "method": "POST",
-      "request": "CreateUserRequest",
-      "response": "UserResponse"
+      "name": "getUserById",
+      "path": "/users/{id}",
+      "method": "GET",
+      "responseModel": "User"
     }
-  ]
+  ],
+  "models": {
+    "User": {
+      "id": "Int",
+      "firstName": "String",
+      "lastName": "String",
+      "age": "Int",
+      "gender": "String",
+      "email": "String"
+    },
+    "UserListResponse": {
+      "users": "List<User>",
+      "total": "Int",
+      "skip": "Int",
+      "limit": "Int"
+    }
+  }
 }
 ```
 
@@ -79,7 +90,7 @@ Inside your project's resource directory, create a JSON file following the namin
 Execute the following Gradle task to generate API service interfaces and model classes:
 
 ```sh
-./gradlew generateNetroApi
+./gradlew netroSync
 ```
 
 ### 3. Generated Code Structure
@@ -93,22 +104,43 @@ After execution, Netro generates the following structure:
 
 #### Example Generated API Service
 ```kotlin
-interface UserApiService {
+public interface UsersApiService {
+    @GET("/users")
+    public suspend fun getUsers(): UserListResponse
+
     @GET("/users/{id}")
-    suspend fun getUser(@Path("id") id: String): UserResponse
-    
-    @POST("/users")
-    suspend fun createUser(@Body request: CreateUserRequest): UserResponse
+    public suspend fun getUserById(@Path("id") id: String): User
 }
 ```
 
 #### Example Generated Data Model
 ```kotlin
 @Serializable
-data class UserResponse(
-    val id: String,
-    val name: String,
-    val email: String
+public data class UserListResponse(
+    @SerialName("users")
+    public val users: List<User>,
+    @SerialName("total")
+    public val total: Int,
+    @SerialName("skip")
+    public val skip: Int,
+    @SerialName("limit")
+    public val limit: Int,
+)
+
+@Serializable
+public data class User(
+    @SerialName("id")
+    public val id: Int,
+    @SerialName("firstName")
+    public val firstName: String,
+    @SerialName("lastName")
+    public val lastName: String,
+    @SerialName("age")
+    public val age: Int,
+    @SerialName("gender")
+    public val gender: String,
+    @SerialName("email")
+    public val email: String,
 )
 ```
 
@@ -125,7 +157,7 @@ Netro automatically organizes API services into separate packages based on JSON 
 
 Where:
 - `{package_name}` is used as the package name.
-- API services are generated inside `{package_name}`.
+- API services are generated inside `{package_name}`. [`{package_name}`+ApiService.kt]
 - Data models are placed inside `{package_name}.models`.
 
 ### Handling Multiple APIs
