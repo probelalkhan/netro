@@ -1,3 +1,5 @@
+![Netro Logo](images/netro_thumb.png)
+
 # Netro Gradle Plugin
 
 **Netro** is a Gradle plugin that automates the generation of Retrofit API interfaces and Kotlin data models using JSON configuration files. It simplifies API integration in Kotlin projects by eliminating the need for manually writing API service interfaces and data models.
