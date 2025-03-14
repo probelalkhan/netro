@@ -1,3 +1,4 @@
+@file:Suppress("ktlint")
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization") version "2.1.10"
@@ -27,8 +28,22 @@ gradlePlugin {
             id = "io.github.probelalkhan.netro"
             implementationClass = "dev.belalkhan.netro.NetroPlugin"
             displayName = "Netro Plugin"
-            description = "Netro is a Gradle plugin that automates the generation of Retrofit API interfaces and Kotlin data models from JSON configuration files. It streamlines API integration by handling multiple HTTP methods (GET, POST, PUT, DELETE) and enforces a structured package organization for maintainability. Built with KotlinPoet and Kotlin Serialization, Netro simplifies API development, reducing boilerplate and improving code consistency."
-            tags.set(listOf("gradle-plugin", "retrofit", "api-generator", "kotlin", "kotlinpoet", "serialization", "networking", "rest-api", "automation", "code-generation"))
+            description =
+                "Netro is a Gradle plugin that automates the generation of Retrofit API interfaces and Kotlin data models from JSON configuration files. It streamlines API integration by handling multiple HTTP methods (GET, POST, PUT, DELETE) and enforces a structured package organization for maintainability. Built with KotlinPoet and Kotlin Serialization, Netro simplifies API development, reducing boilerplate and improving code consistency."
+            tags.set(
+                listOf(
+                    "gradle-plugin",
+                    "retrofit",
+                    "api-generator",
+                    "kotlin",
+                    "kotlinpoet",
+                    "serialization",
+                    "networking",
+                    "rest-api",
+                    "automation",
+                    "code-generation",
+                ),
+            )
         }
     }
 }
@@ -36,5 +51,6 @@ gradlePlugin {
 dependencies {
     //noinspection UseTomlInstead
     implementation("com.squareup:kotlinpoet:2.1.0")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.16.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 }

@@ -1,10 +1,12 @@
 package dev.belalkhan.netro.models
 
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
 
-@Serializable
-data class Config(
-    val baseUrl: String,
-    val endpoints: List<Endpoint>,
-    val models: Map<String, Map<String, String>>,
-)
+data class Config
+    @JsonCreator
+    constructor(
+        @JsonProperty("baseUrl") val baseUrl: String,
+        @JsonProperty("endpoints") val endpoints: List<Endpoint>,
+        @JsonProperty("models") val models: Map<String, Map<String, String>>,
+    )

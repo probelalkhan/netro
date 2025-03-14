@@ -1,12 +1,14 @@
 package dev.belalkhan.netro.models
 
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
 
-@Serializable
-data class Endpoint(
-    val name: String,
-    val path: String,
-    val method: String,
-    val requestModel: String? = null,
-    val responseModel: String,
-)
+data class Endpoint
+    @JsonCreator
+    constructor(
+        @JsonProperty("name") val name: String,
+        @JsonProperty("path") val path: String,
+        @JsonProperty("method") val method: String,
+        @JsonProperty("requestModel") val requestModel: String? = null,
+        @JsonProperty("responseModel") val responseModel: String,
+    )
