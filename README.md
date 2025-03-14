@@ -16,6 +16,9 @@
 
 ---
 
+## Demo Video
+[![Watch the video](images/youtube_thumb.png)](https://www.youtube.com/watch?v=5ilWAYKV0pg&t=1s)
+
 ## Installation 📦
 
 ### 1. Apply the Plugin
