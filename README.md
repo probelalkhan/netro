@@ -2,11 +2,11 @@
 
 # Netro Gradle Plugin
 
-**Netro** is a Gradle plugin that automates the generation of Retrofit API interfaces and Kotlin data models using JSON configuration files. It simplifies API integration in Kotlin projects by eliminating the need for manually writing API service interfaces and data models.
+**Netro** is a Gradle plugin that automates the generation of Retrofit API interfaces and Kotlin data models using YAML configuration files. It simplifies API integration in Kotlin projects by eliminating the need for manually writing API service interfaces and data models.
 
 ## Features 🚀
 
-- **Automatic API Service Generation**: Converts JSON configurations into Retrofit API interfaces.
+- **Automatic API Service Generation**: Converts YAML configurations into Retrofit API interfaces.
 - **Model Class Generation**: Generates Kotlin data classes using KotlinPoet and Kotlin Serialization.
 - **Supports Multiple HTTP Methods**: GET, POST, PUT, DELETE are handled seamlessly.
 - **Organized Code Structure**:
@@ -44,19 +44,19 @@ netroConfig {
 }
 ```
 You can customize the configuration as needed:
-- **`path`**: The directory path where JSON configuration files are stored.
+- **`path`**: The directory path where YAML configuration files are stored.
 - **`packageAlias`**: The package name for generated API services and models.
 ---
 
 ## Usage 🛠
 
-### 1. Create JSON Configuration File
+### 1. Create YAML Configuration File
 Inside the `config` directory (you have defined `config` directory in the `netroConfig` block), create a YAML file following the naming convention:
 
-📁 `projectRoot/netro-configs/user_config.json`
+📁 `projectRoot/netro-configs/user_config.yaml`
 
 ```yaml
-baseUrl: https://dummyjson.com/
+baseUrl: https://dummyYAML.com/
 endpoints:
   - name: loginUser
     path: /user/login
@@ -139,10 +139,10 @@ public data class User(
 ## Advanced Configuration ⚙️
 
 ### Custom Package Naming
-Netro automatically organizes API services into separate packages based on JSON filenames. Ensure your configuration file follows the naming convention:
+Netro automatically organizes API services into separate packages based on YAML filenames. Ensure your configuration file follows the naming convention:
 
 ```
-{package_name}_config.json
+{package_name}_config.yaml
 ```
 
 Where:
@@ -151,22 +151,18 @@ Where:
 - Data models are placed inside `{package_name}.models`.
 
 ### Handling Multiple APIs
-You can define multiple JSON configurations for different API modules. Each file will generate a separate API service and models.
+You can define multiple YAML configurations for different API modules. Each file will generate a separate API service and models.
 
-📁 `src/main/resources/api_config/order_config.json`
-```json
-{
-  "package": "com.example.order",
-  "baseUrl": "https://api.example.com",
-  "endpoints": [
-    {
-      "name": "getOrder",
-      "path": "/orders/{id}",
-      "method": "GET",
-      "response": "OrderResponse"
-    }
-  ]
-}
+📁 `src/main/resources/api_config/order_config.yaml`
+```yaml
+package: com.example.order
+baseUrl: https://api.example.com
+endpoints:
+  - name: getOrder
+    path: /orders/{id}
+    method: GET
+    response: OrderResponse
+
 ```
 
 This will generate:
@@ -225,7 +221,7 @@ Developed by [Belal Khan](https://github.com/probelalkhan)
 
 ## Tags 🏷️
 
-`gradle-plugin` `retrofit` `kotlin` `api-generator` `json-to-kotlin` `kotlinpoet` `code-generation` `serialization`
+`gradle-plugin` `retrofit` `kotlin` `api-generator` `yaml-to-kotlin` `kotlinpoet` `code-generation` `serialization`
 
 ---
 
