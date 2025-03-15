@@ -16,11 +16,12 @@ object ModelGenerator {
         name: String,
         properties: Map<String, Any>,
         packageName: String,
-        isNested: Boolean = false // 🚀 Added flag to differentiate flat vs nested models
+        isNested: Boolean = false,
     ): Pair<FileSpec, List<FileSpec>> {
-        val classBuilder = TypeSpec.classBuilder(name)
-            .addModifiers(KModifier.DATA)
-            .addAnnotation(Serializable::class)
+        val classBuilder =
+            TypeSpec.classBuilder(name)
+                .addModifiers(KModifier.DATA)
+                .addAnnotation(Serializable::class)
 
         val primaryConstructor = FunSpec.constructorBuilder()
         val nestedClasses = mutableListOf<FileSpec>()
@@ -38,23 +39,24 @@ object ModelGenerator {
                             .addAnnotation(
                                 AnnotationSpec.builder(ClassName("kotlinx.serialization", "SerialName"))
                                     .addMember("%S", propName)
-                                    .build()
+                                    .build(),
                             )
-                            .build()
+                            .build(),
                     )
                     primaryConstructor.addParameter(propName, type)
                 }
 
                 is Map<*, *> -> {
                     val nestedClassName = propName.replaceFirstChar { it.uppercaseChar() }
-                    val nestedPackage = if (isNested) packageName else "$packageName.models" // 🚀 Ensure correct placement
+                    val nestedPackage = if (isNested) packageName else "$packageName.models"
 
-                    val nestedClassFile = generateModelClass(
-                        nestedClassName,
-                        propValue as Map<String, Any>,
-                        nestedPackage,
-                        isNested = true // ✅ Mark this as nested to avoid `models.models`
-                    )
+                    val nestedClassFile =
+                        generateModelClass(
+                            nestedClassName,
+                            propValue as Map<String, Any>,
+                            nestedPackage,
+                            isNested = true,
+                        )
                     nestedClasses.add(nestedClassFile.first)
 
                     val nestedType = ClassName(nestedPackage, nestedClassName)
@@ -64,9 +66,9 @@ object ModelGenerator {
                             .addAnnotation(
                                 AnnotationSpec.builder(ClassName("kotlinx.serialization", "SerialName"))
                                     .addMember("%S", propName)
-                                    .build()
+                                    .build(),
                             )
-                            .build()
+                            .build(),
                     )
                     primaryConstructor.addParameter(propName, nestedType)
                 }
@@ -75,15 +77,13 @@ object ModelGenerator {
 
         classBuilder.primaryConstructor(primaryConstructor.build())
 
-        val outputPackage = if (isNested) packageName else "$packageName.models" // 🚀 Fix package placement
+        val outputPackage = if (isNested) packageName else "$packageName.models"
 
-        val mainClassFile = FileSpec.builder(outputPackage, name) // ✅ Ensure correct package
-            .addType(classBuilder.build())
-            .build()
+        val mainClassFile =
+            FileSpec.builder(outputPackage, name)
+                .addType(classBuilder.build())
+                .build()
 
         return Pair(mainClassFile, nestedClasses)
     }
 }
-
-
-

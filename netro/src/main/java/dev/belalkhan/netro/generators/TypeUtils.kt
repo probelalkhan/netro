@@ -8,7 +8,10 @@ import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeName
 
 object TypeUtils {
-    fun getType(type: String, packageName: String): TypeName {
+    fun getType(
+        type: String,
+        packageName: String,
+    ): TypeName {
         return when {
             type.startsWith("List<") -> {
                 val itemType = type.removePrefix("List<").removeSuffix(">")

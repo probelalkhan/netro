@@ -15,11 +15,12 @@ object CodeGenerator {
         outputDir.mkdirs()
         val fullPackage = "$packageName.$dirName"
         config.models.forEach { (modelName, typeDef) ->
-            val (modelFile, nestedFiles) = ModelGenerator.generateModelClass(
-                modelName,
-                typeDef.properties,
-                fullPackage,
-            )
+            val (modelFile, nestedFiles) =
+                ModelGenerator.generateModelClass(
+                    modelName,
+                    typeDef.properties,
+                    fullPackage,
+                )
             modelFile.writeTo(outputDir)
             nestedFiles.forEach { it.writeTo(outputDir) }
         }
@@ -32,4 +33,3 @@ object CodeGenerator {
         println("Netro: Code generation complete!")
     }
 }
-
