@@ -1,8 +1,11 @@
 package dev.belalkhan.netro
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import dev.belalkhan.netro.models.Config
-import kotlinx.serialization.json.Json
+import java.io.File
 
-fun parseConfig(json: String): Config {
-    return Json.decodeFromString(json)
+fun loadConfig(file: File): Config {
+    val mapper = ObjectMapper(YAMLFactory())
+    return mapper.readValue(file, Config::class.java)
 }

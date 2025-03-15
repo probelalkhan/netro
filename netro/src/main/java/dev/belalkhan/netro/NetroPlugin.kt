@@ -23,14 +23,13 @@ class NetroPlugin : Plugin<Project> {
 
         if (configFolder.exists() && configFolder.isDirectory) {
             val configFiles =
-                configFolder.listFiles { file -> file.name.matches(Regex("^[a-zA-Z0-9_]+_config\\.json$")) }
+                configFolder.listFiles { file -> file.name.matches(Regex("^[a-zA-Z0-9_]+_config\\.yaml$")) }
             println("Netro: Found ${configFiles?.size ?: 0} valid config files in $configFolder")
 
             configFiles?.forEach { file ->
-                val json = file.readText()
-                val dirName = file.name.substringBefore("_config.json")
+                val dirName = file.name.substringBefore("_config.yaml")
                 try {
-                    val config = parseConfig(json)
+                    val config = loadConfig(file)
                     CodeGenerator.generateCode(project, config, extension.packageAlias, dirName)
                 } catch (e: Exception) {
                     println("Netro: Error parsing ${file.name}: ${e.message}")

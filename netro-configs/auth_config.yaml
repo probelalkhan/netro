@@ -1,0 +1,18 @@
+baseUrl: https://dummyjson.com/
+endpoints:
+  - name: loginUser
+    path: /user/login
+    method: POST
+    requestModel: LoginRequest
+    responseModel: LoginResponse
+
+models:
+  LoginRequest:
+    username: String
+    password: String
+
+  LoginResponse:
+    id: Int
+    username: String
+    email: String
+    accessToken: String
