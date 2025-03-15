@@ -51,44 +51,29 @@ You can customize the configuration as needed:
 ## Usage 🛠
 
 ### 1. Create JSON Configuration File
-Inside your project's resource directory, create a JSON file following the naming convention:
+Inside the `config` directory (you have defined `config` directory in the `netroConfig` block), create a YAML file following the naming convention:
 
 📁 `projectRoot/netro-configs/user_config.json`
 
-```json
-{
-  "baseUrl": "https://dummyjson.com/",
-  "endpoints": [
-    {
-      "name": "getUsers",
-      "path": "/users",
-      "method": "GET",
-      "responseModel": "UserListResponse"
-    },
-    {
-      "name": "getUserById",
-      "path": "/users/{id}",
-      "method": "GET",
-      "responseModel": "User"
-    }
-  ],
-  "models": {
-    "User": {
-      "id": "Int",
-      "firstName": "String",
-      "lastName": "String",
-      "age": "Int",
-      "gender": "String",
-      "email": "String"
-    },
-    "UserListResponse": {
-      "users": "List<User>",
-      "total": "Int",
-      "skip": "Int",
-      "limit": "Int"
-    }
-  }
-}
+```yaml
+baseUrl: https://dummyjson.com/
+endpoints:
+  - name: loginUser
+    path: /user/login
+    method: POST
+    requestModel: LoginRequest
+    responseModel: LoginResponse
+
+models:
+  LoginRequest:
+    username: String
+    password: String
+
+  LoginResponse:
+    id: Int
+    username: String
+    email: String
+    accessToken: String
 ```
 
 ### 2. Run the Netro Plugin
