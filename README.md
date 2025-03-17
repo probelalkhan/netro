@@ -26,7 +26,7 @@ Then, apply the plugin in your **`build.gradle.kts`**:
 
 ```kotlin
 plugins {
-    id("com.github.probelalkhan.netro") version "0.1"
+    id("com.github.probelalkhan.netro") version "0.2"
 }
 ```
 
